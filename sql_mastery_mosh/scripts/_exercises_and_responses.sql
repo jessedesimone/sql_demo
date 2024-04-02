@@ -69,3 +69,100 @@ SELECT *,
     quantity_in_stock * unit_price AS 'market_value'
 FROM products
 WHERE quantity_in_stock IN (49,38,72);
+
+/*
+BETWEEEN operator
+Return customers born between
+1/1/1990 and 1/1/2000
+*/
+
+describe customers;
+SELECT *
+FROM customers
+WHERE birth_date BETWEEN '1990-01-01' AND '2000-01-01';
+
+/*
+EXERCISE
+Get the customers whose
+addresses contain TRAIL or AVENUE
+then customers whose phone ends in 9
+then customers whose phone does not end in 9 AND born after 1985
+*/
+
+SELECT *
+FROM customers
+WHERE address LIKE '%trail%' OR 
+    address LIKE '%avenue%';
+
+SELECT * 
+FROM customers
+WHERE phone LIKE '%9';
+
+SELECT * 
+FROM customers
+WHERE NOT phone LIKE '%9' AND birth_date > '1984-12-31';
+
+
+
+/*
+REGEX operator
+Get the customers whose
+-first names are ELKA or AMBUR
+-last names end with EY or ON
+-last names start with MY or contain SE
+-last names contain B followed by R or U
+*/
+
+SELECT *
+FROM customers
+WHERE first_name REGEXP 'Elka|AMBUR';
+
+SELECT *
+FROM customers
+WHERE last_name REGEXP 'EY$|ON$';
+
+SELECT * 
+FROM customers
+WHERE last_name REGEXP '^MY|SE';
+
+SELECT * 
+FROM customers 
+WHERE last_name REGEXP 'B[R|U]';
+
+
+/*
+NULL operator
+Get the orders that are not shipped
+*/
+
+show tables;
+describe orders;
+SELECT *
+FROM sql_store.orders
+WHERE shipped_date IS NULL;
+
+
+/*
+ORDER BY clause
+SELECT items from order_id =2 sorted by total price for each item
+sort by total price in desc order
+*/
+
+show tables;
+describe order_items;
+
+SELECT *, quantity * unit_price AS 'total_price'
+FROM order_items
+WHERE order_id = 2
+ORDER BY total_price DESC;
+
+
+/*
+LIMIT clause
+select top 3 loyal customers based on points
+*/
+
+SELECT *, 'loyal' AS 'loyalty'
+FROM customers
+ORDER BY points DESC
+LIMIT 3;
