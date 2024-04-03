@@ -166,3 +166,18 @@ SELECT *, 'loyal' AS 'loyalty'
 FROM customers
 ORDER BY points DESC
 LIMIT 3;
+
+/*
+INNER JOIN
+join order_items table with products table
+return product id, product name, quantity, unit price (at time of placing order)
+note: order_items in unit_price reflects cost at time of placing order; 
+order_items in products reflects up to date pricing
+*/
+
+SELECT * FROM order_items;
+SELECT * FROM products;
+SELECT oi.order_id, name, oi.product_id, quantity, oi.unit_price
+FROM order_items oi
+INNER JOIN products p
+ON oi.product_id = p.product_id;
