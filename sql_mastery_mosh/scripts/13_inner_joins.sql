@@ -31,7 +31,6 @@ return product id, product name, quantity, unit price (at time of placing order)
 note: order_items in unit_price reflects cost at time of placing order; 
 order_items in products reflects up to date pricing
 */
-
 SELECT * FROM order_items;
 SELECT * FROM products;
 SELECT oi.order_id, name, oi.product_id, quantity, oi.unit_price
