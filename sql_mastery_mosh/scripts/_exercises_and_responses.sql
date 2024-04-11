@@ -207,3 +207,87 @@ INNER JOIN payment_methods pm
 ON p.payment_method = pm.payment_method_id
 INNER JOIN clients c
 ON p.client_id = c.client_id;
+
+
+/*
+OUTER JOIN
+join products with order_items table
+show all products whether or not it has actually been orders
+return product_id, name, quantity
+*/
+
+DESCRIBE products;
+DESCRIBE order_items;
+
+SELECT
+p.product_id,
+p.name,
+oi.quantity
+FROM products p
+LEFT JOIN order_items oi
+    ON p.product_id = oi.product_id
+ORDER BY oi.quantity;
+
+/*
+EXERCISE
+write a query
+return order_date, order_id, first_name, shipper, status
+order by status
+*/
+
+SELECT 
+order_date,
+order_id,
+first_name,
+s.name AS 'shipper',
+os.name AS 'status'
+FROM orders o
+-- use inner join as all orders have a customer id
+JOIN customers c
+    ON o.customer_id = c.customer_id
+-- use outer join because not all orders have shipper (i.e., have not been shipped yet)
+LEFT JOIN shippers s
+    ON o.shipper_id = s.shipper_id
+-- use inner join because all orders have a status
+JOIN order_statuses os
+    ON o.status = os.order_status_id
+ORDER BY status, order_id;
+
+/*
+USING clause
+write a query
+select payments from payments table
+return date, client, amount, and method
+*/
+
+SELECT 
+p.date,
+c.name AS 'client',
+p.amount,
+pm.name AS 'payment method'
+FROM payments p
+JOIN clients c
+    USING (client_id)
+LEFT JOIN payment_methods pm
+    ON p.payment_method = pm.payment_method_id;
+
+/*
+CROSS JOIN
+write a query
+cross join between shippers and products
+using implicit syntax
+then using explicit syntax
+*/
+
+SELECT
+    s.name,
+    p.name
+FROM shippers s, products p
+ORDER BY s.name, p.name;
+
+SELECT
+    s.name,
+    p.name
+FROM shippers s
+CROSS JOIN products p
+ORDER BY s.name, p.name;
